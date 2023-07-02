@@ -1,0 +1,12 @@
+.form-link {
+    text-decoration: none;
+}
+
+.article-item {
+    margin: 0 auto;
+    max-width: 1230px;
+}
+
+.article-ttl {
+    border-bottom: 1px solid #000;
+}
