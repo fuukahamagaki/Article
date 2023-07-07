@@ -7,10 +7,19 @@ use App\Models\Article;
 
 class ArticleController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::all();
-        return view('articles/index', compact('articles'));
+        $keyword = $request->input('keyword');
+        $query = Article::query();
+
+        if(!empty($keyword)){
+            $query->where('title', 'LIKE', "%{$keyword}%")
+            ->orWhere('body', 'LIKE', "%{$keyword}%");
+        }
+
+        $articles = $query->get();
+
+        return view('articles.index',compact('articles', 'keyword'));
     }
 
     public function create(Request $request)
@@ -56,5 +65,11 @@ class ArticleController extends Controller
         $article->body = $request->body;
         $article->save();
         return redirect(route('articles.show', $article));
+    }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
+        return redirect(route('articles.index'));
     }
 }
